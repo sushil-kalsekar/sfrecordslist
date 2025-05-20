@@ -1,25 +1,33 @@
 <template>
     <lightning-card title="Record List" icon-name="standard:account">
         <div class="slds-m-around_medium">
-            <lightning-combobox
-                label="Select Object"
-                data-name="objectName"
-                value={objectName}
-                options={objectOptions}
-                onchange={handleObjectChange}>
-            </lightning-combobox>
-            <lightning-input
-                label="Enter Name"
-                data-name="nameValue"
-                value={nameValue}
-                onchange={handleNameChange}>
-            </lightning-input>
-            <lightning-button
-                variant="brand"
-                label="Submit"
-                title="Submit"
-                onclick={fetchRecords}>
-            </lightning-button>
+            <div class="input-container">
+                <div class="object-name-container">
+                    <lightning-combobox
+                        label="Select Object"
+                        data-name="objectName"
+                        value={objectName}
+                        options={objectOptions}
+                        onchange={handleObjectChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="name-field-container">
+                    <lightning-input
+                        label="Enter Name"
+                        data-name="nameValue"
+                        value={nameValue}
+                        onchange={handleNameChange}>
+                    </lightning-input>
+                </div>
+                <div class="submit-button-container">
+                    <lightning-button
+                        variant="brand"
+                        label="Submit"
+                        title="Submit"
+                        onclick={fetchRecords}>
+                    </lightning-button>
+                </div>
+            </div>
             <template lwc:if={isLoading}>
                 <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
             </template>
@@ -28,12 +36,49 @@
                     <div class="slds-text-color_error">{errorMessage}</div>
                 </template>
                 <template lwc:else>
-                    <template lwc:if={records}> 
-                        <table>
-                            <template for:each={records} for:item="elem">
-                                <li key={elem.Record.Id}>{elem.Record.Name}</li>
+                    <template lwc:if={records}>
+                        <div class="result-container">
+                            <div class="table-container">
+                                <table>
+                                    <tr>
+                                        <template for:each={displayFields} for:item="fieldName">
+                                            <th key={fieldName}>{fieldName}</th>
+                                        </template> 
+                                    </tr>
+                                    <template for:each={records} for:item="elem">
+                                        <tr key={elem.Record.Id} >
+                                            <td>
+                                                <template lwc:if={elem.isNotAccessible}>
+                                                    <lightning-icon icon-name="utility:lock" alternative-text="Not Accessible"></lightning-icon>
+                                                </template>
+                                            </td>
+                                            <td>
+                                                <div onclick={seeDetails} data-id={elem.Record.Id}>
+                                                    {elem.Record.Name}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </table>
+                            </div>
+                            <template lwc:if={detailRecordDetails}>
+                                <div class="detail-container">
+                                    <div class="detail-container-label">
+                                        Details:
+                                    </div>
+                                    <div class="detail-container-table">
+                                        <table>
+                                            <template for:each={detailRecordDetails} for:item="fieldDetail">
+                                                <tr key={fieldDetail.fieldName}>
+                                                    <td>{fieldDetail.fieldName}</td>
+                                                    <td>{fieldDetail.fieldValue}</td>
+                                                </tr>
+                                            </template>
+                                        </table>
+                                    </div>
+                                </div>
                             </template>
-                        </table>
+                        </div>
                     </template>
                     <template lwc:else>
                         <p>No records found.</p>

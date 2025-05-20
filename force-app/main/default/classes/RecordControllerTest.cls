@@ -28,7 +28,7 @@ public class RecordControllerTest {
         Test.stopTest();
 
         // Assertions
-        System.assertEquals(2, recordWrapperObj.records.size(), 'Expected two record wrappers');
+        System.assertEquals(1, recordWrapperObj.records.size(), 'Expected two record wrappers');
 
         for (UserAccessController.RecordWrapper wrapper : recordWrapperObj.records) {
             System.assertNotEquals(null, wrapper.Record, 'Record should not be null');

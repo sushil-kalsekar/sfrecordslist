@@ -7,8 +7,9 @@ public with sharing class RecordController {
             return result;
         }
         String fieldSetName = 'BasicFields';
-        result.fieldNames = RecordSelector.getFields(objectName, fieldSetName);                                                                        
+                                                                               
         try{
+            result.fieldNames = RecordSelector.getFields(objectName, fieldSetName); 
             List<SObject> records = RecordSelector.queryRecords(objectName, 
                                         new Map<String,String>{'Name'=>name}, 
                                         result.fieldNames);
@@ -17,6 +18,7 @@ public with sharing class RecordController {
         catch(Exception exceptionInstance){
             //Going with a generic exception handling for now
             System.debug('Error occurred: ' + exceptionInstance.getMessage());
+            result.errorMessage = 'Error occurred: ' + exceptionInstance.getMessage();
         }
         return result;
     }

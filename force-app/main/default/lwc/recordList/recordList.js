@@ -9,8 +9,11 @@ export default class RecordList extends LightningElement {
     nameValue;
     objectName;
     errorMessage;
+    detailRecordDetails;
 
-   
+   get displayFields(){
+    return ['Access','Name'];
+   }
 
     get objectOptions() {
         return [
@@ -37,9 +40,16 @@ export default class RecordList extends LightningElement {
         this.errorMessage = 'Input data changed. Click on Submit button to refresh list.';
         this.objectName = event.detail.value;
     }
-
+    seeDetails(event){
+        let targetRecord = this.records.find(record => record.Record.Id === event.target.dataset.id)
+        if(targetRecord.IsAccessible){
+            this.detailRecordDetails = [...targetRecord.fieldValues];
+            this.detailRecordDetails.splice(0,1);
+        }
+    }
     fetchRecords()
     {
+        this.detailRecordDetails = null;
         this.errorMessage = '';
         console.log('Fetching records for:', this.objectName, this.nameValue);
         getRecordsByName({ objectName: this.objectName, name: this.nameValue })
@@ -53,6 +63,7 @@ export default class RecordList extends LightningElement {
                 this.fields = data.fieldNames;
                 this.records.forEach(record => {
                     record.fieldValues = this.extractObjectEntries(record);
+                    record.isNotAccessible = !record.IsAccessible;
                 });
             })
             .catch(error => {
@@ -60,9 +71,11 @@ export default class RecordList extends LightningElement {
             });
     }
     extractObjectEntries(record){
-        let fieldValues = [];
+        let fieldValues = [{fieldName:'Access', isNotAccessible: !record.IsAccessible,isAccessCell: true }];
         for (let key of this.fields) {
-            fieldValues.push({ fieldName: key, fieldValue: record.Record[key] });
+            if(key!='Id'){
+                fieldValues.push({ fieldName: key, fieldValue: record.Record[key] });
+            }
         }
         return fieldValues;
     }

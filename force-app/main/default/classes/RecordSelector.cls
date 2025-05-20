@@ -21,8 +21,8 @@ public without sharing class RecordSelector {
             List<String> whereClauseConditions = new List<String>();
             for (String fieldName : fieldMap.keySet()) {
                 String fieldValue = fieldMap.get(fieldName);
-                if(fieldValue!=null && fieldValue == '') {
-                    whereClauseConditions.add(fieldName + ' = \'' + String.escapeSingleQuotes(fieldValue) + '\'');
+                if(fieldValue!=null && fieldValue != '') {
+                    whereClauseConditions.add(fieldName + ' Like \'%' + String.escapeSingleQuotes(fieldValue) + '%\'');
                 }
             }
             if(whereClauseConditions.size() > 0) {

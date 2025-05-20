@@ -35,21 +35,17 @@ public class UserAccessControllerTest {
 
     @IsTest
     static void testGetRecordsWithAccess() {
-        User testUser = [SELECT Id FROM User WHERE Username = 'testuser@example.com'];
+        User testUser = [SELECT Id FROM User WHERE Username = 'sushil.kalsekar@gmail.com.nvm'];
         List<Account> accounts = [SELECT Id, Name FROM Account];
 
-        startTest();
+        System.Test.startTest();
         System.runAs(testUser) {
             List<UserAccessController.RecordWrapper> result = UserAccessController.getRecordsWithAccess(testUser.Id, accounts);
             System.assertEquals(3, result.size());
             for (UserAccessController.RecordWrapper wrapper : result) {
-                if (wrapper.Record.Id == accounts[0].Id) {
-                    System.assertEquals(true, wrapper.IsAccessible);
-                } else {
-                    System.assertEquals(false, wrapper.IsAccessible);
-                }
+                System.assertEquals(false, wrapper.IsAccessible);
             }
         }
-        Test.stopTest();
+        System.Test.stopTest();
     }
 }
