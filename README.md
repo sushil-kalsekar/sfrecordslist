@@ -13,15 +13,16 @@
 
 ### ⚙️ Apex Classes
 - **RecordController**: Apex controller exposed to the LWC
-  - `getRecordsByName(String objectName, String searchTerm)`
+  - `getRecordsByName(String objectName, String name)`
 - **RecordSelector**: Helper class
-  - `getFields(String objectName, String fieldSetName)`
-  - `queryRecords(String objectName, String searchTerm, List<String> fields)`
+  - `getFields(String objectType, String fieldSetName)`
+  - `queryRecords(String objectType, Map<String,String> fieldMap, List<String> fieldSetFields)`
 - **UserAccessController**: Handles record-level access checks
-  - `getRecordsWithAccess(List<SObject>)`
+  - `getRecordsWithAccess(Id userId, List<SObject> records)`
+  - (private) getMapOfRecordAccess(Id userId, List<Id> recordIds)
 
 ### 🔐 Permission Set
-- **RecordViewerPermissions**: Grants access to the Apex classes and fields used by the application
+- **RecordViewerPermissions**: Grants access to the Apex classes used by the application
 
 ---
 
@@ -37,8 +38,8 @@
 
 ### 🔗 URL Query Parameters
 The component supports deep linking by accepting the following URL query parameters:
-- `object`: Object API name (e.g., `Account`)
-- `name`: Name text to search (e.g., `Acme`)
+- `c__objectname`: Object API name (e.g., `Account`)
+- `c__name`: Name text to search (e.g., `Acme`)
 
 **Example Usage:**
 https://<your-salesforce-instance>/lightning/n/RecordViewer?c__objectname=Account&c__name=Acme
@@ -68,8 +69,8 @@ These field sets define which fields are shown for each object when records are 
 ---
 
 ## 🔒 Access Control
-
-The `UserAccessController` class ensures the logged-in user has access to view specific records. Only the `Name` field is shown for inaccessible records, accompanied by a lock icon for clarity.
+The 'RecordSelector' class operates in 'without sharing' context to fetch all records in the system.
+The `UserAccessController` class ensures the records are filtered based on the access that the logged-in user has to specific records. Only the `Name` field is shown for inaccessible records, accompanied by a lock icon for clarity.
 
 ---
 
