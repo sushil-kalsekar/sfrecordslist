@@ -24,6 +24,7 @@ public class RecordControllerTest {
 
         // Call the method being tested
         Test.startTest(); 
+        RecordController.getRecordsByName(null, nameFieldValue);
         RecordController.RecordWrapper recordWrapperObj = RecordController.getRecordsByName(objectType, nameFieldValue);
         Test.stopTest();
 
