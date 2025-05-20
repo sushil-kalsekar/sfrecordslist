@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Record List" icon-name="standard:account">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                label="Select Object"
+                data-name="objectName"
+                value={objectName}
+                options={objectOptions}
+                onchange={handleObjectChange}>
+            </lightning-combobox>
+            <lightning-input
+                label="Enter Name"
+                data-name="nameValue"
+                value={nameValue}
+                onchange={handleNameChange}>
+            </lightning-input>
+            <lightning-button
+                variant="brand"
+                label="Submit"
+                title="Submit"
+                onclick={fetchRecords}>
+            </lightning-button>
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            <template lwc:else>
+                <template lwc:if={errorMessage}>
+                    <div class="slds-text-color_error">{errorMessage}</div>
+                </template>
+                <template lwc:else>
+                    <template lwc:if={records}> 
+                        <table>
+                            <template for:each={records} for:item="elem">
+                                <li key={elem.Record.Id}>{elem.Record.Name}</li>
+                            </template>
+                        </table>
+                    </template>
+                    <template lwc:else>
+                        <p>No records found.</p>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>
