@@ -27,8 +27,8 @@ export default class RecordList extends LightningElement {
     currentPageReference;
 
     connectedCallback() {
-        this.objectName = this.currentPageReference.state.objectname;
-        this.nameValue = this.currentPageReference.state.name;
+        this.objectName = this.currentPageReference.state.c__objectname;
+        this.nameValue = this.currentPageReference.state.c__name;
         this.fetchRecords();
     }
  
