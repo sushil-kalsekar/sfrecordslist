@@ -37,7 +37,7 @@ public without sharing class RecordSelector {
         String query = 'SELECT ' + String.join(fieldSetFields, ', ') +
                        ' FROM ' + objectType +
                        whereClause +
-                       ' WITH SECURITY_ENFORCED';
+                       ' WITH SECURITY_ENFORCED ORDER BY LastModifiedDate DESC';
 
         return Database.query(query);
     }
