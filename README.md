@@ -3,6 +3,34 @@
 **RecordViewer** is a custom Salesforce application that enables users to search and view records across multiple standard objects (Account, Contact, Opportunity) via a Lightning Web Component (LWC) interface. The interface supports both direct interaction and deep linking via URL query parameters for quick access to specific data.
 
 ---
+## 📖 Case Study
+
+![CaseStudyProblemStatement](SF_RecordList_CaseStudy.png)
+
+**Scenario Breakdown:** 
+
+| Statement | Implication/Inference | Assumption |
+| --------- | --------------------- | ---------- |
+| User must be able see Account / Contact or Opportunity records | A list view of records is required for Account/Contact/Opportunity object ||
+| and their field values Name, Owner, CreatedBy, LastModifiedBy, CreatedDate, LastModifiedDate, | Mentioned fields should be queried ||
+| (Website - Account, Phone Number - Contact, Amount - Opportunity) | Object specific fields to be handled specifically ||
+| After these inputs are provided, | Some inputs are expected | Inputs not clearly mentioned, hence, assuming inputs as object picker and name search as text based on completed context |
+| clicking the submit button, | Submit button expected to trigger action ||
+| page should display record names, | Requirement indicates only record names to be displayed ||
+| ordered by most recently modified. | Records to be ordered based on last modified date ||
+| This should occur regardless of the end user’s access to the records. | Logic running should ignore sharing settings for the user and fetch all available records matching the search criteria ||
+| For records that are inaccessible, a lock icon should indicate restricted access. | Use lightning icon for lock to indicate restricted access to this record ||
+| For records that are accessible, clicking on the record’s name should expand the row to show details of the fields mentioned above. | Record Name should be clickable and expand the row to show details | Row expansion handled as updating details in a panel on right hand side |
+| Optionally, the page should load with pre-populated values for the inputs based on parameters passed to the page. | Page should be capable of handling parameters passed to the page | Assuming parameters are passed in URL |
+
+## 💡 Thought Process
+
+The application is supposed to solve a record searching problem and making record names available to the user irrespective of the access but that the same time enforcing restriction on granular data. 
+The user should provide input in form of object name ( via dropdown) and a name phrase to search using the LIKE operator. Once all the matching records are fetched, the records are marked as visible or not and data is stripped from inaccessible records while only keeping the Id and the name field to be sent to the UI. Finally, the UI renders the records in tabular format and extends details of visible records in another table on the click event of record name. 
+
+
+
+---
 
 ## 📦 Components
 
@@ -19,7 +47,7 @@
   - `queryRecords(String objectType, Map<String,String> fieldMap, List<String> fieldSetFields)`
 - **UserAccessController**: Handles record-level access checks
   - `getRecordsWithAccess(Id userId, List<SObject> records)`
-  - (private) getMapOfRecordAccess(Id userId, List<Id> recordIds)
+  - `(private) getMapOfRecordAccess(Id userId, List<Id> recordIds)`
 
 ### 🔐 Permission Set
 - **RecordViewerPermissions**: Grants access to the Apex classes used by the application
