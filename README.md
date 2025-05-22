@@ -28,7 +28,9 @@
 The application is supposed to solve a record searching problem and making record names available to the user irrespective of the access but that the same time enforcing restriction on granular data. 
 The user should provide input in form of object name ( via dropdown) and a name phrase to search using the LIKE operator. Once all the matching records are fetched, the records are marked as visible or not and data is stripped from inaccessible records while only keeping the Id and the name field to be sent to the UI. Finally, the UI renders the records in tabular format and extends details of visible records in another table on the click event of record name. 
 
+## 💻 UI Application View
 
+![Application View](Demo.png)
 
 ---
 
