@@ -74,9 +74,29 @@ export default class RecordList extends LightningElement {
         let fieldValues = [{fieldName:'Access', isNotAccessible: !record.IsAccessible,isAccessCell: true }];
         for (let key of this.fields) {
             if(key!='Id'){
-                fieldValues.push({ fieldName: key, fieldValue: record.Record[key] });
+                let isComplexKey = key.includes('.');
+                if(isComplexKey){
+                    let keySet = key.split('.');
+                    let formattedKey = this.formatComplexKey(key);
+                    let fieldValue = this.complexKeyAccess(record.Record, keySet); 
+                    fieldValues.push({ fieldName: formattedKey, fieldValue: fieldValue });
+                }
+                else{
+                    fieldValues.push({ fieldName: key, fieldValue: record.Record[key] });
+                }
             }
         }
         return fieldValues;
+    }
+    formatComplexKey(key){
+        return key.split('.').join(' ');
+    }
+    complexKeyAccess(record,keySet){
+        if(keySet.length > 1){
+            return this.complexKeyAccess(record[keySet[0]], keySet.slice(1));
+        }
+        else{
+            return record[keySet[0]];
+        }
     }
 }

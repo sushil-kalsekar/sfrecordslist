@@ -39,7 +39,7 @@
                     <template lwc:if={records}>
                         <div class="result-container">
                             <div class="table-container">
-                                <table>
+                                <table border="1">
                                     <tr>
                                         <template for:each={displayFields} for:item="fieldName">
                                             <th key={fieldName}>{fieldName}</th>
@@ -47,12 +47,12 @@
                                     </tr>
                                     <template for:each={records} for:item="elem">
                                         <tr key={elem.Record.Id} >
-                                            <td>
+                                            <td class="access-column">
                                                 <template lwc:if={elem.isNotAccessible}>
                                                     <lightning-icon icon-name="utility:lock" alternative-text="Not Accessible"></lightning-icon>
                                                 </template>
                                             </td>
-                                            <td>
+                                            <td class="name-column">
                                                 <div onclick={seeDetails} data-id={elem.Record.Id}>
                                                     {elem.Record.Name}
                                                 </div>
@@ -67,7 +67,7 @@
                                         Details:
                                     </div>
                                     <div class="detail-container-table">
-                                        <table>
+                                        <table border="1">
                                             <template for:each={detailRecordDetails} for:item="fieldDetail">
                                                 <tr key={fieldDetail.fieldName}>
                                                     <td>{fieldDetail.fieldName}</td>
