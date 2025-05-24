@@ -75,7 +75,7 @@ export default class RecordList extends LightningElement {
         for (let key of this.fields) {
             if(key!='Id'){
                 let isComplexKey = key.includes('.');
-                if(isComplexKey){
+                if(record.IsAccessible && isComplexKey){
                     let keySet = key.split('.');
                     let formattedKey = this.formatComplexKey(key);
                     let fieldValue = this.complexKeyAccess(record.Record, keySet); 
